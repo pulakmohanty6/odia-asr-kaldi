@@ -1,0 +1,9 @@
+# Ignore audio files
+*.wav
+*.flac
+*.mp3
+
+# Ignore huge Kaldi output directories
+exp/
+mfcc/
+data/local/dict/lexiconp.txt
