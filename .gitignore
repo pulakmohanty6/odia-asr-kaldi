@@ -7,3 +7,10 @@
 exp/
 mfcc/
 data/local/dict/lexiconp.txt
+
+# Python caches
+__pycache__/
+
+# Huge data files and Kaldi engine
+data/
+kaldi-master/
