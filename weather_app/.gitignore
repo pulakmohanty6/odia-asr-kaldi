@@ -1,0 +1,14 @@
+# Ignore the Python Virtual Environment (Massive binaries)
+venv/
+env/
+
+# Ignore Python Cache files
+__pycache__/
+*.pyc
+
+# Ignore temporary AI-generated audio files
+*.wav
+*.mp3
+
+# Ignore Hugging Face local cache (just in case)
+.cache/
