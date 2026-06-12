@@ -26,6 +26,7 @@ unique_chars = sorted(list(unique_chars))
 dict_dir = f"{PROJECT_PATH}/data/local/dict"
 
 # Write lexicon.txt (Word -> phoneme phoneme phoneme)
+os.makedirs(dict_dir, exist_ok=True)
 with open(f"{dict_dir}/lexicon.txt", "w", encoding="utf-8") as f:
     f.write("<UNK> SPN\n") # Unknown words are Spoken Noise (SPN)
     for word in unique_words:
