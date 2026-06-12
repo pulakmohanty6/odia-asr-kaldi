@@ -13,20 +13,24 @@ def clean_odia_text(text):
     text = ' '.join(text.split())
     return text
 
-print("Unlocking the Mozilla Validated Vault...")
+print("Unlocking the Mozilla Validated AND Unvalidated Vaults...")
 
 # 1. Load the TEST set first (so we know what to avoid)
 test_df = pd.read_csv(os.path.join(DATASET_PATH, "test.tsv"), sep='\t')
 test_clips = set(test_df['path'].tolist())
 
-# 2. Load the MASSIVE Validated set
+# 2. Load the Validated AND Other sets
 val_df = pd.read_csv(os.path.join(DATASET_PATH, "validated.tsv"), sep='\t')
+other_df = pd.read_csv(os.path.join(DATASET_PATH, "other.tsv"), sep='\t')
 
-# 3. Create the true Maximum Train Set (Everything in validated EXCEPT the test clips)
-train_df = val_df[~val_df['path'].isin(test_clips)]
+# Merge them into one gigantic pool
+massive_pool = pd.concat([val_df, other_df], ignore_index=True)
+
+# 3. Create the true Maximum Train Set (Everything EXCEPT the test clips)
+train_df = massive_pool[~massive_pool['path'].isin(test_clips)]
 
 print(f"Total Test Clips Found: {len(test_df)}")
-print(f"Total Train Clips Found (Max Data): {len(train_df)}\n")
+print(f"Total Train Clips Pooled (Validated + Other): {len(train_df)}\n")
 
 def process_dataframe(df, split_name):
     print(f"Processing {split_name} split...")
@@ -58,7 +62,7 @@ def process_dataframe(df, split_name):
                     sox_cmd = f"sox '{src_mp3}' -r 16000 -c 1 '{dest_wav}'"
                     subprocess.run(sox_cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 else:
-                    continue # Skip if audio file is physically missing
+                    continue 
             
             f_text.write(f"{utt_id} {sentence}\n")
             f_utt2spk.write(f"{utt_id} {client_id}\n")
