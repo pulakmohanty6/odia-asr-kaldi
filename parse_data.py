@@ -21,8 +21,12 @@ def process_split(split_name):
     tsv_file = os.path.join(DATASET_PATH, f"{split_name}.tsv")
     df = pd.read_csv(tsv_file, sep='\t')
     
-    # SHUFFLE the data to grab 500 random sentences (multiple speakers!)
+    # SHUFFLE the data to grab 5000 random sentences (multiple speakers!)
     df_subset = df.sample(n=5000, random_state=42) if len(df) >= 5000 else df
+    
+    # FIX: Automatically create the required data and wav directories if they are missing
+    os.makedirs(f"{PROJECT_PATH}/data/{split_name}", exist_ok=True)
+    os.makedirs(f"{PROJECT_PATH}/wav/{split_name}", exist_ok=True)
     
     with open(f"{PROJECT_PATH}/data/{split_name}/text", "w", encoding="utf-8") as f_text, \
          open(f"{PROJECT_PATH}/data/{split_name}/wav.scp", "w") as f_wav, \
